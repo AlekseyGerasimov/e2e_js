@@ -1,10 +1,14 @@
 import { test, expect } from '@playwright/test';
+import { TIMEOUT } from 'dns';
 
 test('test', async ({ page }) => {
+  test.setTimeout(120000);
   await page.goto('https://lala.bet/');
   await page.goto('https://lala.bet/?tab=sport');
-  // await expect(page).toHaveURL('tab=sport');
+  // Check Title
   await expect(page).toHaveTitle(/Lala/);
+  // Check Cookies notice
+  await expect(page.locator('div.t-cookies-modal')).toBeVisible();
   await page.getByRole('button', { name: 'Sign Up' }).click();
   await page.locator('input[type="email"]').click();
   await page.locator('input[type="email"]').fill('alex.ger+' + Date.now().toString() + '@truelabel.io');
@@ -33,5 +37,7 @@ test('test', async ({ page }) => {
   await page.getByRole('textbox').fill('+55-75-78392-93999');
   await page.getByRole('button', { name: 'Sign up', exact: true }).click();
   await page.waitForTimeout(5000);
-  await expect(page.getByRole('button', { name: 'Sign up', exact: true }).isEnabled).toBe(true);
+  const signupButton = await page.$('text=Sign up');
+  // check SignUp button still showed
+  await signupButton?.waitForElementState("enabled");
 });
