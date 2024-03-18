@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import { TIMEOUT } from 'dns';
 
 test('test', async ({ page }) => {
   test.setTimeout(120000);
@@ -36,7 +35,6 @@ test('test', async ({ page }) => {
   await page.getByRole('textbox').click();
   await page.getByRole('textbox').fill('+55-75-78392-93999');
   await page.getByRole('button', { name: 'Sign up', exact: true }).click();
-  await page.waitForTimeout(5000);
   const signupButton = await page.$('text=Sign up');
   // check SignUp button still showed
   await signupButton?.waitForElementState("enabled");
